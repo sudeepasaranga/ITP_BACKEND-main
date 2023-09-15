@@ -1,5 +1,10 @@
-const router = require('express').Router();
-let Employee = require('../../models/StaffModel/staff.model');
+const jwt = require('jsonwebtoken');
+const router = require("express").Router();
+const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
+const authEmployee = require("../../middleware/authEmployee");
+let EMPLOYEE = require("../../models/StaffModel/staff.model");
+const Employee = require('../../models/StaffModel/staff.model');
 
 /* GET all employees.('http://localhost:8081/api/staff/staff/getallemployees')  */
 
@@ -9,34 +14,89 @@ router.route('/getallemployees').get((_req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
-// Add New Employee. ('http://localhost:8081/api/staff/staff/addnewemployee')
 
-router.route("/addnewemployee").post((req,res)=>{
+//Add New Member. ('http://localhost:8081/api/staff/staff/addnewemployee')
 
-    const empfirstName = req.body.empfirstName;
-    const empLastName = req.body.empLastName;
-    const empEmail = req.body.empEmail;
-    const empContactNumber = Number(req.body.empContactNumber);
-	const Gender = req.body.Gender;
-    const Position = req.body.Position;
-    const joinedDate = Date.parse(req.body.joinedDate);
-
-	
-
-    const newEmployee = new Employee({
-        empfirstName, 
-        empLastName,
-        empEmail,
-        empContactNumber,
-        Gender,
-        Position,
-        joinedDate,
-    })
-
-    newEmployee.save()  
-    .then(()=>{res.json("Successfully add new employee !") //Employee added status
-    }).catch(err => res.status(400).json('Error: ' + err));  //display err
-});
+router.post('/addnewemployee', async(req,res) =>{
+    const {empfirstName,empLastName,empEmail,empPassword,empConfirmPassword,empContactNumber, Gender, Position, joinedDate} = req.body;
+  
+      if( !empfirstName || !empLastName|| !empEmail || !empPassword || !empConfirmPassword || !empContactNumber || !Gender || !Position || !joinedDate){
+          return res.status(422).json({error:"Plz filled the field properly"});
+      }
+      try{
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+          const patientImp = await EMPLOYEE.findOne({empEmail:empEmail});
+  
+          if(patientImp){
+              return res.status(422).json({error:"Email already Exist"});
+  
+          }else if (empPassword !== empConfirmPassword) {
+  
+              return res.status(422).json({error:"Password are not matching"});
+          } else{                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+          
+          const employee = new EMPLOYEE({empfirstName,empLastName,empEmail,empPassword,empConfirmPassword,empContactNumber, Gender, Position, joinedDate});
+  
+          await employee.save()
+          .then(employee=>{
+  
+              res.status(201).json({message:"Successfully add new member !!"});
+  
+          })
+          .catch(err=>{
+              console.log(err)
+          })
+      }
+  
+      }catch(err){
+          console.log(err);
+      }
+  });
+      
+  //Login route ('http://localhost:8081/api/staff/staff/adminlogin')
+  router.post('/adminlogin', async(req,res) =>{
+  
+      try{
+              let token;
+              const {empEmail, empPassword} = req.body;
+  
+              if(!empEmail || !empPassword){
+                  return res.status(400).json({error:" Plz! Filled the data"});
+              }
+  
+              const employeeLogin = await EMPLOYEE.findOne({empEmail:empEmail});
+              //console.log(userLogin);
+  
+          if(employeeLogin ){
+  
+              const isMatch = await bcrypt.compare(empPassword, employeeLogin.empPassword);
+              
+              const  token  = await employeeLogin.generateAuthToken(); //see thsis
+                  console.log(token);
+  
+                  res.cookie('jwtoken', token, {
+                      expires:new Date(Date.now() + 25892000000),
+                      httpOnly: true
+                  });
+  
+              if(!isMatch){
+  
+              res.status(400).json({error: "Invalid password!"});
+  
+              }else{
+  
+              res.json({message: "Login successfully!!"})
+              }
+  
+           } else{
+  
+              res.status(400).json({error: "Invalid credentials !"});
+          }
+  
+      }catch(err){
+          console.log(err);
+      }
+  });
 
 // Update Employee details ('http://localhost:8081/api/staff/staff/updateemployee')
 router.route('/updateemployee/:id').put((req, res) => {

@@ -63,7 +63,6 @@ router.post('/login', async(req,res) =>{
             }
 
             const customerLogin = await CUSTOMER.findOne({email:email});
-            //console.log(userLogin);
 
         if(customerLogin ){
 
@@ -94,6 +93,14 @@ router.post('/login', async(req,res) =>{
     }catch(err){
         console.log(err);
     }
+});
+
+//Remove Customer ('http://localhost:8081/api/customer/customer/removecustomer')
+
+router.route('/removecustomer/:id').delete((req, res) => {
+    Customer.findOneAndDelete(req.params.customerId)
+        .then(() => res.json(' Successfully remove customer from the system !'))
+        .catch(err => res.status(400).json('Error: ' + err));
 });
 
 //view one ('http://localhost:8081/api/customer/customer/getcustomerbyid')
