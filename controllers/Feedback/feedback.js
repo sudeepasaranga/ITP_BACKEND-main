@@ -33,9 +33,9 @@ router.route('/getallfeedbacks').get((_req, res) => {
 
 // Update feedback ('http://localhost:8081/api/feedback/feedback/update/:id')
 router.route('/update/:id').put((req, res) => {
-    const feedbackId = req.params.feedbackId;
+    const id = req.params.id;
 
-    Feedback.findOneAndUpdate(feedbackId)
+    Feedback.findByIdAndUpdate(id)
         .then(feedback => {
             if (!feedback) {
                 return res.status(404).json('Feedback not found');
@@ -58,14 +58,14 @@ router.route('/update/:id').put((req, res) => {
 
 //Remove feedback ('http://localhost:8081/api/feedback/feedback/remove/:id ')
 router.route('/remove/:id').delete((req, res) => {
-    Feedback.findOneAndDelete(req.params.feedbackId)
+    Feedback.findByIdAndDelete(req.params.id)
         .then(() => res.json('Feedback deleted successfully !!.'))
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
 //view one feedback ('http://localhost:8081/api/feedback/feedback/getfeedbackbyid/:id ')
 router.route('/getfeedbackbyid/:id').get((req, res) => {
-    Feedback.findOne(req.params.feedbackId)
+    Feedback.findById(req.params.id)
         .then(feedback => res.json(feedback))
         .catch(err => res.status(400).json('Error: ' + err));
 });

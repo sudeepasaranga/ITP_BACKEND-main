@@ -40,5 +40,6 @@ module.exports = function (app) {
 
     //author @Chamika (Order Management)
     app.use('/api/order/order', require('../controllers/Order/order'));
+    app.use('/api/order/cart', require('../controllers/Order/cart'));
     // @Chamika: end
 }

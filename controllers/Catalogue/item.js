@@ -19,6 +19,8 @@ router.route("/addnewitem").post((req,res)=>{
     const price = req.body.price;
     const stockStatus = req.body.stockStatus;
     const itemDescription = req.body.itemDescription;
+    const image = req.body.image;
+
 
     const newItem = new Item({
         itemName, 
@@ -26,7 +28,8 @@ router.route("/addnewitem").post((req,res)=>{
         Material,
         price,
         stockStatus,
-        itemDescription
+        itemDescription,
+        image
 
     })
 
@@ -51,6 +54,7 @@ router.route('/updateitem/:id').put((req, res) => {
 			item.price = req.body.price;
             item.stockStatus = req.body.stockStatus;
             item.itemDescription = req.body.itemDescription;
+            item.image = req.body.image;
 
             item.save()
                 .then(() => res.json('Item details updated successfully!'))
