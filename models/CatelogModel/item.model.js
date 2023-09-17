@@ -11,6 +11,8 @@ const itemSchema = new Schema({
     price : { type : String, required : true },
     stockStatus : { type : String, required : true },
     itemDescription : { type : String, required : true },
+    image: { type : String, required : true}
+
 },{
     timestamps: true
 }); 
