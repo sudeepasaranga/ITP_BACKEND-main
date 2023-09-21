@@ -98,11 +98,27 @@ router.post('/addnewemployee', async(req,res) =>{
       }
   });
 
+  // Create a logout route ('http://localhost:8081/api/staff/staff/adminlogout')
+router.post('/adminlogout', authEmployee, async (req, res) => {
+    try {
+        req.rootEmployee.tokens = req.rootEmployee.tokens.filter((token) => {
+            return token.token !== req.token;
+        });
+        await req.rootEmployee.save();
+    
+          res.clearCookie('jwtoken'); // Clear the cookie
+          res.status(200).json({ message: 'Logout successful' });
+        } catch (err) {
+          console.error(err);
+          res.status(500).json({ error: 'Internal Server Error' });
+        }
+  });
+
 // Update Employee details ('http://localhost:8081/api/staff/staff/updateemployee')
 router.route('/updateemployee/:id').put((req, res) => {
-    const empId = req.params.empId;
+    const id = req.params.id;
 
-    Employee.findOneAndUpdate(empId)
+    Employee.findByIdAndUpdate(id)
         .then(employee => {
             if (!employee) {
                 return res.status(404).json('Employee not found');
@@ -125,7 +141,7 @@ router.route('/updateemployee/:id').put((req, res) => {
 //Remove Employee ('http://localhost:8081/api/staff/staff/removeemployee')
 
 router.route('/removeemployee/:id').delete((req, res) => {
-    Employee.findOneAndDelete(req.params.empId)
+    Employee.findByIdAndDelete(req.params.id)
         .then(() => res.json(' Successfully remove employee from the system !'))
         .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -133,7 +149,7 @@ router.route('/removeemployee/:id').delete((req, res) => {
 //view one employee details ('http://localhost:8081/api/staff/staff/getemployeebyid')
 
 router.route('/getemployeebyid/:id').get((req, res) => {
-    Employee.findOne(req.params.empId)
+    Employee.findById(req.params.id)
         .then(employee => res.json(employee))
         .catch(err => res.status(400).json('Error: ' + err));
 });

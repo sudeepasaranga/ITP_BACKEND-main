@@ -55,9 +55,9 @@ router.route("/addnew").post((req,res)=>{
 
 //  update .('http://localhost:8081/api/staff/salary/updatesalary')
 router.route('/updatesalary/:id').put((req, res) => {
-    const salaryId = req.params.salaryId;
+    const id = req.params.id;
 
-    Salary.findOneAndUpdate(salaryId)
+    Salary.findByIdAndUpdate(id)
         .then(salary => {
             if (!salary) {
                 return res.status(404).json('Employee Salary details not found');
@@ -83,8 +83,8 @@ router.route('/updatesalary/:id').put((req, res) => {
 
 //Remove   ('http://localhost:8081/api/staff/salary/remove')
 
-router.route('/remove/:id').delete((req, res) => {
-    Salary.findOneAndDelete(req.params.salaryId)
+router.route('/remove/:id').delete((req, res) => { 
+    Salary.findByIdAndDelete(req.params.id)
         .then(() => res.json(' Successfully remove !'))
         .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -92,7 +92,7 @@ router.route('/remove/:id').delete((req, res) => {
 //view one ('http://localhost:8081/api/staff/salary/getonebyid')
 
 router.route('/getonebyid/:id').get((req, res) => {
-    Salary.findOne(req.params.salaryId)
+    Salary.findById(req.params.id)
         .then(salary => res.json(salary))
         .catch(err => res.status(400).json('Error: ' + err));
 });

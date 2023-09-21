@@ -42,9 +42,9 @@ router.route("/addnewdelivery").post((req,res)=>{
 
 // Update Delivery details ('http://localhost:8081/api/delivery/delivery/updatedelivery')
 router.route('/updatedelivery/:id').put((req, res) => {
-    const deliveryId = req.params.deliveryId;
+    const id = req.params.id;
 
-    Delivery.findOneAndUpdate(deliveryId)
+    Delivery.findByIdAndUpdate(id)
         .then(delivery => {
             if (!delivery) {
                 return res.status(404).json('Delivery not found');
@@ -68,7 +68,7 @@ router.route('/updatedelivery/:id').put((req, res) => {
 //Remove Delivery ('http://localhost:8081/api/delivery/delivery/removedelivery')
 
 router.route('/removedelivery/:id').delete((req, res) => {
-    Delivery.findOneAndDelete(req.params.deliveryId)
+    Delivery.findByIdAndDelete(req.params.id)
         .then(() => res.json(' Successfully remove Delivery !'))
         .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -76,7 +76,7 @@ router.route('/removedelivery/:id').delete((req, res) => {
 //view one delivery details ('http://localhost:8081/api/delivery/delivery/getdeliverybyid')
 
 router.route('/getdeliverybyid/:id').get((req, res) => {
-    Delivery.findOne(req.params.deliveryId)
+    Delivery.findById(req.params.id)
         .then(delivery => res.json(delivery))
         .catch(err => res.status(400).json('Error: ' + err));
 });

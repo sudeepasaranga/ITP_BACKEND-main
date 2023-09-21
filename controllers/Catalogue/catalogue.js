@@ -31,9 +31,9 @@ router.route("/addnewcategory").post((req,res)=>{
 
 // Update Category ('http://localhost:8081/api/catalogue/catalogue/updatecategory')
 router.route('/updatecategory/:id').put((req, res) => {
-    const catalogueId = req.params.catalogueId;
+    const id = req.params.id;
 
-    Catalogue.findOneAndUpdate(catalogueId)
+    Catalogue.findByIdAndUpdate(id)
         .then(catalogue => {
             if (!catalogue) {
                 return res.status(404).json('Category not found');
@@ -53,7 +53,7 @@ router.route('/updatecategory/:id').put((req, res) => {
 //Remove category  ('http://localhost:8081/api/catalogue/catalogue/removecategory')
 
 router.route('/removecategory/:id').delete((req, res) => {
-    Catalogue.findOneAndDelete(req.params.catalogueId)
+    Catalogue.findByIdAndDelete(req.params.id)
         .then(() => res.json(' Successfully remove category !'))
         .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -61,7 +61,7 @@ router.route('/removecategory/:id').delete((req, res) => {
 //view one payment  ('http://localhost:8081/api/catalogue/catalogue/viewcategorybyid')
 
 router.route('/viewcategorybyid/:id').get((req, res) => {
-    Catalogue.findOne(req.params.catalogueId)
+    Catalogue.findById(req.params.id)
         .then(category => res.json(category))
         .catch(err => res.status(400).json('Error: ' + err));
 });

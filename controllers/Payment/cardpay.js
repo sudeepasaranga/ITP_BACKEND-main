@@ -36,7 +36,7 @@ router.route("/addnewcard").post((req,res)=>{
 router.route('/updatecard/:id').put((req, res) => {
     const cardId = req.params.cardId;
 
-    CardPay.findOneAndUpdate(cardId)
+    CardPay.findByIdAndUpdate(id)
         .then(cardpay => {
             if (!cardpay) {
                 return res.status(404).json('Card not found');
@@ -58,7 +58,7 @@ router.route('/updatecard/:id').put((req, res) => {
 //Remove Card ('http://localhost:8081/api/payment/cardpay/removecard')
 
 router.route('/removecard/:id').delete((req, res) => {
-    CardPay.findOneAndDelete(req.params.cardId)
+    CardPay.findByIdAndUpdate(req.params.id)
         .then(() => res.json(' Successfully remove card !'))
         .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -66,7 +66,7 @@ router.route('/removecard/:id').delete((req, res) => {
 //view one card  ('http://localhost:8081/api/payment/cardpay/getcardbyid')
 
 router.route('/getcardbyid/:id').get((req, res) => {
-    CardPay.findOne(req.params.cardId)
+    CardPay.findById(req.params.id)
         .then(cardpay => res.json(cardpay))
         .catch(err => res.status(400).json('Error: ' + err));
 });

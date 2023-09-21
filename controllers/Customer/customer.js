@@ -98,7 +98,7 @@ router.post('/login', async(req,res) =>{
 //Remove Customer ('http://localhost:8081/api/customer/customer/removecustomer')
 
 router.route('/removecustomer/:id').delete((req, res) => {
-    Customer.findOneAndDelete(req.params.customerId)
+    Customer.findByIdAndDelete(req.params.id)
         .then(() => res.json(' Successfully remove customer from the system !'))
         .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -106,7 +106,7 @@ router.route('/removecustomer/:id').delete((req, res) => {
 //view one ('http://localhost:8081/api/customer/customer/getcustomerbyid')
 
 router.route('/getcustomerbyid/:id').get((req, res) => {
-    Customer.findOne(req.params.customerId)
+    Customer.findById(req.params.id)
         .then(customer => res.json(customer))
         .catch(err => res.status(400).json('Error: ' + err));
 });

@@ -36,9 +36,9 @@ router.route("/addnewsupplier").post((req,res)=>{
 
 // Update supplier details ('http://localhost:8081/api/inventory/supplier/updatesupplier')
 router.route('/updatesupplier/:id').put((req, res) => {
-    const supplierId = req.params.supplierId;
+    const id = req.params.id;
 
-    Supplier.findOneAndUpdate(supplierId)
+    Supplier.findByIdAndUpdate(id)
         .then(supplier => {
             if (!supplier) {
                 return res.status(404).json('Supplier not found');
@@ -60,7 +60,7 @@ router.route('/updatesupplier/:id').put((req, res) => {
 //Remove supplier  ('http://localhost:8081/api/inventory/supplier/removesupplier')
 
 router.route('/removesupplier/:id').delete((req, res) => {
-    Supplier.findOneAndDelete(req.params.supplierId)
+    Supplier.findByIdAndDelete(req.params.id)
         .then(() => res.json(' Successfully remove supplier !'))
         .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -68,7 +68,7 @@ router.route('/removesupplier/:id').delete((req, res) => {
 //view one supplier details ('http://localhost:8081/api/inventory/supplier/getsupplierbyid')
 
 router.route('/getsupplierbyid/:id').get((req, res) => {
-    Supplier.findOne(req.params.supplierId)
+    Supplier.findById(req.params.id)
         .then(supplier => res.json(supplier))
         .catch(err => res.status(400).json('Error: ' + err));
 });

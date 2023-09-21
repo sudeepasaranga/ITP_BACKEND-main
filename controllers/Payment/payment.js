@@ -40,7 +40,7 @@ router.route("/newpayment").post((req,res)=>{
 //Remove payment history by id  ('http://localhost:8081/api/payment/payment/removepayment')
 
 router.route('/removepayment/:id').delete((req, res) => {
-    Payment.findOneAndDelete(req.params.paymentId)
+    Payment.findByIdAndDelete(req.params.id)
         .then(() => res.json(' Successfully remove payment record !'))
         .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -48,7 +48,7 @@ router.route('/removepayment/:id').delete((req, res) => {
 //view one payment  ('http://localhost:8081/api/payment/payment/viewpaymentbyid')
 
 router.route('/viewpaymentbyid/:id').get((req, res) => {
-    Payment.findOne(req.params.paymentId)
+    Payment.findById(req.params.id)
         .then(payment => res.json(payment))
         .catch(err => res.status(400).json('Error: ' + err));
 });

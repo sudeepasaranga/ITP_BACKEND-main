@@ -7,7 +7,9 @@ const feedbackSchema = new Schema({
     Username: { type: String, required: true },
     Phone: { type: Number, required: true },
     Email: { type: String, required: true },
-    date: { type: Date, required: true },
+    date: { type: Date, required: true,  
+        default: Date.now, 
+        set: date => date.setHours(0, 0, 0, 0)  },
     feedbackMsg: { type: String, required: true }
 }, 
 {
