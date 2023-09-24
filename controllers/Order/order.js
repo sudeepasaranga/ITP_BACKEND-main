@@ -13,20 +13,25 @@ router.route('/getallorders').get((_req, res) => {
 
 router.route("/createorder").post((req,res)=>{
 
-    const customerId = Number(req.body.customerId);
     const customerName = req.body.customerName;
+    const address = req.body.address;
+    const Phone = Number(req.body.Phone);
     const orderDate = Date.parse(req.body.orderDate);
-    const totalCost = req.body.totalCost;
-    const orderItems = req.body.orderItems;
-    const odrerStatus = req.body.odrerStatus;
+    const totalCost = Number(req.body.totalCost);
+    const itemName = req.body.itemName;
+    const quantity = Number(req.body.quantity);
+    const paymentMethod = req.body.paymentMethod;
 
     const newOrder = new Order({
-        customerId, 
+
         customerName,
+        address,
+        Phone,
         orderDate,
         totalCost,
-        orderItems,
-        odrerStatus
+        itemName,
+        quantity,
+        paymentMethod
     })
 
     newOrder.save()  
@@ -44,12 +49,14 @@ router.route('/changeorder/:id').put((req, res) => {
                 return res.status(404).json('Order not found');
             }
 
-            order.customerId = Number(req.body.customerId);
             order.customerName = req.body.customerName;
+            order.address = req.body.address;
+            order.Phone = Number(req.body.Phone);
             order.orderDate = Date.parse(req.body.orderDate);
-			order.totalCost = req.body.totalCost;
-            order.orderItems = req.body.orderItems;
-            order.odrerStatus = req.body.odrerStatus;
+			order.totalCost = Number(req.body.totalCost);
+            order.itemName = req.body.itemName;
+            order.quantity = Number(req.body.quantity);
+            order.paymentMethod = req.body.paymentMethod;
 
             order.save()
                 .then(() => res.json('Order changed successfully!'))
