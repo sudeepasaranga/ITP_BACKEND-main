@@ -59,7 +59,6 @@ customerSchema.pre('save', async function (next){
     next();
 });
 
-
 // Generate token with  secret key
 customerSchema.methods.generateAuthToken = async function () {
     try {
@@ -71,11 +70,6 @@ customerSchema.methods.generateAuthToken = async function () {
         console.log(err);
     }
 };
-
-
-
-
-
 
 const Customer = mongoose.model('Customer', customerSchema);
 module.exports = Customer; //Export 
