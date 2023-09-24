@@ -38,9 +38,9 @@ router.route("/addnewdriver").post((req,res)=>{
 
 // Update Driver details ('http://localhost:8081/api/delivery/drivers/updatedriver')
 router.route('/updatedriver/:id').put((req, res) => {
-    const driverId = req.params.driverId;
+    const id = req.params.id;
 
-    Driver.findOneAndUpdate(driverId)
+    Driver.findByIdAndUpdate(id)
         .then(driver => {
             if (!driver) {
                 return res.status(404).json('Driver not found');
@@ -63,7 +63,7 @@ router.route('/updatedriver/:id').put((req, res) => {
 //Remove Driver ('http://localhost:8081/api/delivery/drivers/removedriver')
 
 router.route('/removedriver/:id').delete((req, res) => {
-    Driver.findOneAndDelete(req.params.driverId)
+    Driver.findByIdAndUpdate(req.params.id)
         .then(() => res.json(' Successfully remove driver from the system !'))
         .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -71,7 +71,7 @@ router.route('/removedriver/:id').delete((req, res) => {
 //view one driver details ('http://localhost:8081/api/delivery/drivers/getdriverbyid')
 
 router.route('/getdriverbyid/:id').get((req, res) => {
-    Driver.findOne(req.params.driverId)
+    Driver.findById(req.params.id)
         .then(driver => res.json(driver))
         .catch(err => res.status(400).json('Error: ' + err));
 });

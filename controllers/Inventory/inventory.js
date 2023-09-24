@@ -41,9 +41,9 @@ router.route("/addnewitem").post((req,res)=>{
 
 // Update Item details ('http://localhost:8081/api/inventory/inventory/updateitem')
 router.route('/updateitem/:id').put((req, res) => {
-    const itemId = req.params.itemId;
+    const id = req.params.id;
 
-    Inventory.findOneAndUpdate(itemId)
+    Inventory.findByIdAndUpdate(id)
         .then(inventory => {
             if (!inventory) {
                 return res.status(404).json('Item not found');
@@ -67,7 +67,7 @@ router.route('/updateitem/:id').put((req, res) => {
 //Remove Item  ('http://localhost:8081/api/inventory/inventory/removeitem')
 
 router.route('/removeitem/:id').delete((req, res) => {
-    Inventory.findOneAndDelete(req.params.itemId)
+    Inventory.findByIdAndDelete(req.params.id)
         .then(() => res.json(' Successfully remove item !'))
         .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -75,7 +75,7 @@ router.route('/removeitem/:id').delete((req, res) => {
 //view one Item details ('http://localhost:8081/api/inventory/inventory/getitembyid')
 
 router.route('/getitembyid/:id').get((req, res) => {
-    Inventory.findOne(req.params.itemId)
+    Inventory.findById(req.params.id)
         .then(inventory => res.json(inventory))
         .catch(err => res.status(400).json('Error: ' + err));
 });

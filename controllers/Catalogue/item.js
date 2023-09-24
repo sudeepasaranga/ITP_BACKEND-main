@@ -40,9 +40,9 @@ router.route("/addnewitem").post((req,res)=>{
 
 // Update item details ('http://localhost:8081/api/catalogue/item/updateitem')
 router.route('/updateitem/:id').put((req, res) => {
-    const itemId = req.params.itemId;
+    const id = req.params.id;
 
-    Item.findOneAndUpdate(itemId)
+    Item.findByIdAndUpdate(id)
         .then(item => {
             if (!item) {
                 return res.status(404).json('Item not found');
@@ -66,7 +66,7 @@ router.route('/updateitem/:id').put((req, res) => {
 //Remove item  ('http://localhost:8081/api/catalogue/item/removeitem')
 
 router.route('/removeitem/:id').delete((req, res) => {
-    Item.findOneAndDelete(req.params.itemId)
+    Item.findByIdAndDelete(req.params.id)
         .then(() => res.json(' Successfully remove item !'))
         .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -74,7 +74,7 @@ router.route('/removeitem/:id').delete((req, res) => {
 //view one Item  ('http://localhost:8081/api/catalogue/item/viewitembyid')
 
 router.route('/viewitembyid/:id').get((req, res) => {
-    Item.findOne(req.params.itemId)
+    Item.findById(req.params.id)
         .then(item => res.json(item))
         .catch(err => res.status(400).json('Error: ' + err));
 });

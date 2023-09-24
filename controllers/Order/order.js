@@ -41,9 +41,9 @@ router.route("/createorder").post((req,res)=>{
 
 // change order details ('http://localhost:8081/api/order/order/changeorder')
 router.route('/changeorder/:id').put((req, res) => {
-    const orderId = req.params.orderId;
+    const id = req.params.id;
 
-    Order.findOneAndUpdate(orderId)
+    Order.findByIdAndUpdate(id)
         .then(order => {
             if (!order) {
                 return res.status(404).json('Order not found');
@@ -68,7 +68,7 @@ router.route('/changeorder/:id').put((req, res) => {
 //Remove order  ('http://localhost:8081/api/order/order/removeorder')
 
 router.route('/removeorder/:id').delete((req, res) => {
-    Order.findOneAndDelete(req.params.orderId)
+    Order.findByIdAndDelete(req.params.id)
         .then(() => res.json(' Successfully remove order !'))
         .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -76,7 +76,7 @@ router.route('/removeorder/:id').delete((req, res) => {
 //view one order ('http://localhost:8081/api/order/order/vieworderbyid')
 
 router.route('/vieworderbyid/:id').get((req, res) => {
-    Order.findOne(req.params.orderId)
+    Order.findById(req.params.id)
         .then( order => res.json(order))
         .catch(err => res.status(400).json('Error: ' + err));
 });

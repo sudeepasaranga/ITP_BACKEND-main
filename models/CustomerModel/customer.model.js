@@ -1,11 +1,12 @@
 const jwt = require('jsonwebtoken');
 const mongoose =require('mongoose');
 const bcrypt  = require('bcryptjs');
+
 const Schema = mongoose.Schema;
 
 const customerSchema =new Schema({
 
-    customerid : { type:Number, required:false, unique: true, index: true },
+    cusId : { type: Number, required: false, unique: true, index: true },
     firstName : {type : String,  required:true },
     lastName : {type : String,  required:true },
     email : {  type : String, required:true },
@@ -24,16 +25,18 @@ const customerSchema =new Schema({
         }
     ]
 
+},{
+    timestamps: true,
 });
 
-// Pre-save middleware to auto-increment customerid
+// Pre-save middleware to auto-increment customerId
 customerSchema.pre('save', async function (next) {
     if (!this.isNew) {
         return next();
     }
     try {
-        const lastCustomer = await Customer.findOne({}, {}, { sort: { 'customerid': -1 } });
-        this.customerid = lastCustomer ? lastCustomer.customerid + 1 : 1;
+        const lastCustomer = await Customer.findOne({}, {}, { sort: { 'cusId': -1 } });
+        this.cusId = lastCustomer ? lastCustomer.cusId + 1 : 1;
         next();
     } catch (error) {
         return next(error);
@@ -41,17 +44,20 @@ customerSchema.pre('save', async function (next) {
 });
 
 //Hashing Password
-
 customerSchema.pre('save', async function (next){
     console.log("Hi I am pre");
-    if(this.isModified('password')){
+    if(this.isModified('password') || this.isModified('confirmPassword')){
         console.log("Hi I am pre password");
-        this.password = await bcrypt.hash(this.password,6);
-       
+        const saltRounds = 6; 
+        if (this.isModified('password')) {
+            this.password = await bcrypt.hash(this.password, saltRounds);
+        }
+        if (this.isModified('confirmPassword')) {
+            this.confirmPassword = await bcrypt.hash(this.confirmPassword, saltRounds);
+        }
     }
     next();
 });
-
 
 // Generate token with  secret key
 customerSchema.methods.generateAuthToken = async function () {
@@ -65,7 +71,7 @@ customerSchema.methods.generateAuthToken = async function () {
     }
 };
 
-const Customer = mongoose.model("Customer", customerSchema);
+const Customer = mongoose.model('Customer', customerSchema);
 module.exports = Customer; //Export 
 
 

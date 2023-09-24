@@ -65,9 +65,9 @@ router.route("/addnewvehicle").post((req,res)=>{
 
 // Update vehicle ('http://localhost:8081/api/delivery/vehicle/updatevehicle')
 router.route('/updatevehicle/:id').put((req, res) => {
-    const vehicleId = req.params.vehicleId;
+    const id = req.params.id;
 
-    Vehicle.findOneAndUpdate(vehicleId)
+    Vehicle.findByIdAndUpdate(id)
         .then(vehicle => {
             if (!vehicle) {
                 return res.status(404).json('Vehicle not found');
@@ -85,12 +85,12 @@ router.route('/updatevehicle/:id').put((req, res) => {
                 .catch(err => res.status(400).json('Error: ' + err));
         })
         .catch(err => res.status(400).json('Error: ' + err));
-});
+    });
 
 //Remove Vehicle ('http://localhost:8081/api/delivery/vehicle/removevehicle')
 
 router.route('/removevehicle/:id').delete((req, res) => {
-    Vehicle.findOneAndDelete(req.params.vehicleId)
+    Vehicle.findByIdAndDelete(req.params.id)
         .then(() => res.json(' Successfully remove vehicle from the system !'))
         .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -98,7 +98,7 @@ router.route('/removevehicle/:id').delete((req, res) => {
 //view one vehicle details ('http://localhost:8081/api/delivery/vehicle/getvehiclebyid')
 
 router.route('/getvehiclebyid/:id').get((req, res) => {
-    Vehicle.findOne(req.params.vehicleId)
+    Vehicle.findById(req.params.id)
         .then(vehicle => res.json(vehicle))
         .catch(err => res.status(400).json('Error: ' + err));
 });
