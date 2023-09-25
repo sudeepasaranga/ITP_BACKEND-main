@@ -4,13 +4,7 @@ const Schema = mongoose.Schema;
 
 const cardpaySchema = new Schema({
 
-    cardId : {
-        type:Number,
-        required:false,
-        unique: true,
-        index: true
-    },
-
+    cardId : { type:Number, required:false, unique: true, index: true },
     cardnumber : {
         type:Number,
         required:true,
@@ -21,12 +15,6 @@ const cardpaySchema = new Schema({
             },
             message: 'Invalid credit card number format',
         },
-        unique: true,
-    },
-
-    customerId :{
-        type:Number,
-        required: true,
         unique: true,
     },
 

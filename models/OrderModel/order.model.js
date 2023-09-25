@@ -5,12 +5,11 @@ const Schema = mongoose.Schema;
 const orderSchema = new Schema({
 
     orderId : { type:Number, required:false, unique: true, index: true },
-    customerId :  { type:Number, required:true, unique: true},
     customerName : { type:String, required:true},
+    address: {type:String, required:true},
+    Phone: { type: Number, required: true },
     orderDate :{ type:Date, required: true },
-    totalCost :{ type:String, required: true },
-    orderItems :{ type:String, required: true },
-    odrerStatus : { type:String, required: true },
+    totalCost :{ type:Number, required: true }
 
 });
 
