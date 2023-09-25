@@ -18,9 +18,7 @@ router.route("/createorder").post((req,res)=>{
     const Phone = Number(req.body.Phone);
     const orderDate = Date.parse(req.body.orderDate);
     const totalCost = Number(req.body.totalCost);
-    const itemName = req.body.itemName;
-    const quantity = Number(req.body.quantity);
-    const paymentMethod = req.body.paymentMethod;
+
 
     const newOrder = new Order({
 
@@ -29,9 +27,6 @@ router.route("/createorder").post((req,res)=>{
         Phone,
         orderDate,
         totalCost,
-        itemName,
-        quantity,
-        paymentMethod
     })
 
     newOrder.save()  
@@ -54,9 +49,6 @@ router.route('/changeorder/:id').put((req, res) => {
             order.Phone = Number(req.body.Phone);
             order.orderDate = Date.parse(req.body.orderDate);
 			order.totalCost = Number(req.body.totalCost);
-            order.itemName = req.body.itemName;
-            order.quantity = Number(req.body.quantity);
-            order.paymentMethod = req.body.paymentMethod;
 
             order.save()
                 .then(() => res.json('Order changed successfully!'))

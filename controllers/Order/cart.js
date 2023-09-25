@@ -24,7 +24,7 @@ router.route("/addNewcart").post((req,res)=>{
         price,
         itemDescription,
         image,
-        quantity
+        quantity,
     })
 
     newCart.save()  
@@ -34,9 +34,9 @@ router.route("/addNewcart").post((req,res)=>{
 
 // Update item details ('http://localhost:8081/api/order/cart/updatecart')
 router.route('/updatecart/:id').put((req, res) => {
-    const itemId = req.params.id;
+    const id = req.params.id;
 
-    Cart.findOneAndUpdate(itemId)
+    Cart.findByIdAndUpdate(id)
         .then(cart => {
             if (!cart) {
                 return res.status(404).json('Cart not found');
@@ -47,6 +47,7 @@ router.route('/updatecart/:id').put((req, res) => {
             cart.itemDescription = req.body.itemDescription;
             cart.image = req.body.image;
             cart.quantity = req.body.quantity;
+            cart.total = req.body.total;
 
 
             cart.save()
@@ -59,7 +60,7 @@ router.route('/updatecart/:id').put((req, res) => {
 //Remove item  ('http://localhost:8081/api/order/cart/removecart')
 
 router.route('/removecart/:id').delete((req, res) => {
-    Cart.findOneAndDelete(req.params.itemId)
+    Cart.findByIdAndDelete(req.params.id)
         .then(() => res.json(' Successfully remove Cart !'))
         .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -67,7 +68,7 @@ router.route('/removecart/:id').delete((req, res) => {
 //view one Item  ('http://localhost:8081/api/order/cart/viewcart')
 
 router.route('/viewcart/:id').get((req, res) => {
-    Cart.findOne(req.params.itemId)
+    Cart.findById(req.params.id)
         .then(cart => res.json(cart))
         .catch(err => res.status(400).json('Error: ' + err));
 });

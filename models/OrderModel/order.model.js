@@ -9,10 +9,7 @@ const orderSchema = new Schema({
     address: {type:String, required:true},
     Phone: { type: Number, required: true },
     orderDate :{ type:Date, required: true },
-    totalCost :{ type:Number, required: true },
-    itemName :{ type:String, required: true },
-    quantity: {type : Number, required: true},
-    paymentMethod :{ type:String, required: true }
+    totalCost :{ type:Number, required: true }
 
 });
 
