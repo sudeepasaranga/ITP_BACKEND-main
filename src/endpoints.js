@@ -26,6 +26,7 @@ module.exports = function (app) {
     //author @______ (Staff Management)
     app.use('/api/staff/staff', require('../controllers/Staff/staff'));
     app.use('/api/staff/salary', require('../controllers/Staff/salary'));
+    app.use('/api/staff/tasks', require('../controllers/Staff/tasks'));
     // @______: end
 
     //author @Sanka (Payment Management)

@@ -11,7 +11,7 @@ const employeeSchema = new Schema({
     empEmail: { type: String, required: true, match: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/, },
     empPassword :{type : String, required : true, },
     empConfirmPassword : {type: String, required: true },
-    empContactNumber: {  type: String,  required: true, maxLength: 10 },
+    empContactNumber: {  type: Number,  required: true },
     Gender: { type: String, required: true },
     Position: { type: String, required: true },
     joinedDate: { type: Date, required: true },
